@@ -20,7 +20,7 @@ class CreatePhotoTable extends Migration {
             $table->string('title');
             $table->text('caption');
             $table->integer('user')->unsigned();
-            $table->foreign('user')->references('id')->on('users');
+            $table->foreign('user')->references('id')->on('users')->onDelete('cascade');
 		});
 	}
 

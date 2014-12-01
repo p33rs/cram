@@ -19,8 +19,8 @@ class CreateCommentTable extends Migration {
             $table->text('text');
             $table->integer('photo')->unsigned();
             $table->integer('user')->unsigned();
-            $table->foreign('photo')->references('id')->on('photos');
-            $table->foreign('user')->references('id')->on('users');
+            $table->foreign('photo')->references('id')->on('photos')->onDelete('cascade');
+            $table->foreign('user')->references('id')->on('users')->onDelete('cascade');
 		});
 	}
 
