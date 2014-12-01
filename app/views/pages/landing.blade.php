@@ -5,7 +5,7 @@
 <div class="landing">
     <section class="landing-login login">
         <aside class="error_text"></aside>
-        {{ Form::open(['route' => 'login', 'class' => 'login-form']) }}
+        {{ Form::open(['route' => 'login', 'class' => 'login-form form-horizontal']) }}
             <dl>
                 <dt>
                     {{ Form::label('login-username', 'Username') }}

@@ -16,6 +16,10 @@ module.exports = function(grunt) {
             dist: {
                 src: 'js/**/*.js',
                 dest: 'public/js/cram.js'
+            },
+            css: {
+                src: 'css/**/*.css',
+                dest: 'public/css/style.css'
             }
         },
         uglify: {
@@ -29,6 +33,13 @@ module.exports = function(grunt) {
                 }
             }
         },
+        less: {
+            development: {
+                files: {
+                    "css/vendor/bootstrap.css": "bower_components/bootstrap/less/bootstrap.less"
+                }
+            }
+        },
         watch: {
             files: ['<%= concat.vendor.src %>', '<%= concat.dist.src %>'],
             tasks: ['concat', 'uglify']
@@ -38,7 +49,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-less');
 
-    grunt.registerTask('default', ['concat', 'uglify', 'watch']);
+    grunt.registerTask('default', ['less', 'concat', 'uglify', 'watch']);
 
 };

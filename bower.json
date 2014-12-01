@@ -9,7 +9,8 @@
     "main": "index.php",
     "dependencies": {
         "jquery": "git://github.com/jquery/jquery.git",
-        "events": "git://github.com/p33rs/events.git"
+        "events": "git://github.com/p33rs/events.git",
+        "bootstrap": "2.3.2"
     },
     "ignore": [
         "vendor/**/*",
