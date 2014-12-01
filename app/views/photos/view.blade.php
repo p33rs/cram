@@ -1,15 +1,15 @@
 @extends('layouts.default')
 @section('page')
 <h2>
-    {{ $photo->title }}
+    {{{ $photo->title }}}
 </h2>
 <h3>
-    By {{ $photo->getUser->firstname . ' ' . $photo->getUser->lastname }}
+    By {{{ $photo->getUser->firstname . ' ' . $photo->getUser->lastname }}}
 </h3>
 <img src="{{ URL::route('photo/raw', ['id' => $photo->id]) }}" />
 @if($photo->caption)
 <p class="caption">
-    {{ $photo->caption }}
+    {{{ $photo->caption }}}
 </p>
 @else
 <p class="caption empty">
@@ -17,16 +17,22 @@
 </p>
 @endif
 
+@if($photo->getUser->id == Auth::id())
+<a href="{{ URL::route('photo/delete', ['id' => $photo->id]) }}" class="photo_item-delete">
+    Delete Photo
+</a>
+@endif
+
 @if($photo->getComments->count())
 <ul>
 @foreach ($photo->getComments as $comment)
     <li>
         <blockquote>
-        {{ $comment->text }}
+        {{{ $comment->text }}}
         </blockquote>
         <cite>
-        {{ $comment->getUser->firstname }}
-        {{ $comment->getUser->lastname }}
+        {{{ $comment->getUser->firstname }}}
+        {{{ $comment->getUser->lastname }}}
         </cite>
     </li>
 @endforeach

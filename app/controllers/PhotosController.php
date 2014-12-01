@@ -3,9 +3,17 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class PhotosController extends BaseController {
 
-    public function index()
+    public function index($username = null)
     {
-        $photos = [];
+        if ($username) {
+            $user = User::where('username', '=', $username)->first();
+            if (!$user) {
+                return Redirect::route('photos')->with('error', 'User not found.');
+            }
+            $photos = Photo::where('user', '=', $user->id);
+        } else {
+            $photos = Photo::all();
+        }
         return View::make('photos/index')->with('photos', $photos);
     }
 
@@ -50,17 +58,36 @@ class PhotosController extends BaseController {
         try {
             return View::make('photos/view')
                 ->with('photo', Photo::findOrFail($id))
+                ->with('deleteError', Session::pull('delete_error'))
                 ->with('commentError', Session::pull('comment_error'));
         } catch (ModelNotFoundException $e) {
-            return Redirect::route('photos')->with('view_error', 'Photo not found');
+            return Redirect::route('photos')->with('error', 'Photo not found');
         }
     }
 
     public function delete($id)
     {
-        $photo = Photo::findOrFail($id);
-        $photo->delete($id);
-        return Redirect::route('photos');
+        $photo = Photo::find($id);
+        $error = '';
+        if (!$photo) {
+            $error = 'Photo not found';
+        } elseif ($photo->getUser->id != Auth::id()) {
+            $error = 'That\'s not your photo! You can\'t uncram that!';
+        } else {
+            $photo->delete($id);
+            File::delete($photo->getPath());
+        }
+        if (Request::isMethod('post')) {
+            $result = [ 'success' => !$error, 'error' => $error ];
+            return Response::json($result);
+        } elseif ($error && $photo) {
+            $redirect = Redirect::route('photo', ['id' => $id])->with('error', $error);
+        } elseif ($error) {
+            $redirect = Redirect::route('photos')->with('error', $error);
+        } else {
+            $redirect = Redirect::route('photos')->with('message', 'Photo deleted.');
+        }
+        return $redirect;
     }
 
     public function like()
