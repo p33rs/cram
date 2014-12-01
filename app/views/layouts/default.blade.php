@@ -25,6 +25,9 @@
         <li>
             <a href="{{ URL::route('photo/upload') }}">Upload</a>
         </li>
+        <li>
+            <a href="{{ URL::route('logout') }}">Logout</a>
+        </li>
     </ul>
 </nav>
 @if($error = Session::pull('error'))

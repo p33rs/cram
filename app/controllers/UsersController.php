@@ -54,12 +54,28 @@ class UsersController extends BaseController {
 
     public function account()
     {
-        return View::make('users/account');
-    }
-
-    public function accountSave()
-    {
-
+        $user = Auth::user();
+        if (!Request::isMethod('post')) {
+            return View::make('user/account')->with('user', $user);
+        }
+        $data = Input::all();
+        /** @var cram\validators\ValidatorLocator $validators */
+        $validators = App::make('cram\Validation');
+        /** @var cram\validators\SignupValidator $validator */
+        $errors = $validators->get('Account', $data, ['id' => $user->id])->errors();
+        $user->email = Input::get('email');
+        $user->firstname = Input::get('firstname');
+        $user->lastname = Input::get('lastname');
+        if (Input::get('password')) {
+            $user->password = Hash::make($data['password']);
+        }
+        if (!$errors->count()) {
+            $user->save();
+            Session::set('message', 'Account updated');
+        }
+        return View::make('user/account')
+            ->with('user', $user)
+            ->with('errors', $errors);
     }
 
     public function follow()

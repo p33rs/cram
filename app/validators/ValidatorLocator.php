@@ -6,7 +6,7 @@ class ValidatorLocator {
      * @return \cram\validators\AbstractValidator
      * @throws \InvalidArgumentException
      */
-    public function get($validator, Array $data = [])
+    public function get($validator, Array $data = [], Array $tokens = [])
     {
         $fq = __NAMESPACE__ . '\\' . $validator;
         if (!class_exists($fq)) {
@@ -16,6 +16,6 @@ class ValidatorLocator {
             throw new \InvalidArgumentException('Validator not found: ' . $fq);
         }
 
-        return new $fq($data);
+        return new $fq($data, $tokens);
     }
 }

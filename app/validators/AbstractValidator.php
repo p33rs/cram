@@ -14,11 +14,20 @@ abstract class AbstractValidator {
      */
     protected $rules;
 
+    const T_A = '{';
+    const T_P = '}';
+
     /**
      * @param array $data Data to validate
      */
-    public function __construct(Array $data)
+    public function __construct(Array $data, array $tokens = [])
     {
+        foreach ($tokens as $token => $value) {
+            $string = self::T_A . $token . self::T_P;
+            foreach ($this->rules as $key => $rule) {
+                $this->rules[$key] = str_replace($string, $value, $rule);
+            }
+        }
         $this->validator = Validator::make($data, $this->rules);
     }
 
