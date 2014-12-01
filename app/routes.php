@@ -20,6 +20,7 @@ Route::group(['prefix' => 'photo', 'before' => 'auth'], function() {
     Route::get('upload', ['uses' => 'PhotosController@upload', 'as' => 'photo/upload']);
     Route::group(['prefix' => '{id}'], function() {
         Route::get('/', ['uses' => 'PhotosController@view', 'as' => 'photo']);
+        Route::get('raw', ['uses' => 'PhotosController@raw', 'as' => 'photo/raw']);
         Route::post('comment', ['uses' => 'PhotosController@comment', 'as' => 'photo/comment']);
         Route::post('delete', ['uses' => 'PhotosController@delete', 'as' => 'photo/delete']);
         Route::post('like', ['uses' => 'PhotosController@like', 'as' => 'photo/like']);
