@@ -17,7 +17,7 @@ Route::group(['prefix' => 'user', 'before' => 'auth'], function() {
 });
 
 Route::group(['prefix' => 'photo', 'before' => 'auth'], function() {
-    Route::get('upload', ['uses' => 'PhotosController@upload', 'as' => 'photo/upload']);
+    Route::match(['GET', 'POST'], 'upload', ['uses' => 'PhotosController@upload', 'as' => 'photo/upload']);
     Route::group(['prefix' => '{id}'], function() {
         Route::get('/', ['uses' => 'PhotosController@view', 'as' => 'photo']);
         Route::get('raw', ['uses' => 'PhotosController@raw', 'as' => 'photo/raw']);
