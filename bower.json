@@ -1,0 +1,20 @@
+{
+    "name": "peers/cram",
+    "version": "0.0.0",
+    "homepage": "http://peers.pw",
+    "authors": [
+        "p33rs <jon@peers.pw>"
+    ],
+    "description": "for violently cramming pics into tubes",
+    "main": "index.php",
+    "dependencies": {
+        "jquery": "git://github.com/jquery/jquery.git",
+        "events": "git://github.com/p33rs/events.git"
+    },
+    "ignore": [
+        "vendor/**/*",
+        "node_modules",
+        "**/.*",
+        "!.gitignore"
+    ]
+}
