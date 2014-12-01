@@ -55,7 +55,7 @@
                 <dd class="error_text" data-for="password2"></dd>
             </dl>
         {{ Form::submit('Start Crammin\'') }}
-        </form>
+        {{ Form::close() }}
         <button class="login-switch">Log in</button>
     </section>
 </div>
