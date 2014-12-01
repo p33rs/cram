@@ -6,11 +6,11 @@ use Illuminate\Auth\Reminders\RemindableTrait;
 class Comment extends Eloquent {
     public function getUser()
     {
-        return $this->belongsToOne('User', 'user');
+        return $this->belongsTo('User', 'user');
     }
 
     public function getPhoto()
     {
-        return $this->belongsToOne('Photo', 'photo');
+        return $this->belongsTo('Photo', 'photo');
     }
 }

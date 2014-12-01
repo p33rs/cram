@@ -11,7 +11,7 @@ class Photo extends Eloquent {
 
     public function getUser()
     {
-        return $this->belongsToOne('User', 'user');
+        return $this->belongsTo('User', 'user');
     }
 
     public function getLikers()
