@@ -4,7 +4,7 @@ use Faker\Factory as Faker;
 
 class TestingSeeder extends Seeder {
 
-    const NUM_USERS = 3;
+    const NUM_USERS = 10;
     const PASSWORD = '12345678a';
 
     // per user
@@ -87,6 +87,7 @@ class TestingSeeder extends Seeder {
                     $x,
                     $y
                 ));
+                $filename = uniqid();
                 $user->getPhotos()->save(new Photo([
                     'filename' => $filename,
                     'title' => $this->faker->sentence(mt_rand(1,5)),
@@ -127,10 +128,12 @@ class TestingSeeder extends Seeder {
                 $limit = $users->count();
             }
             $followees = $users->random($limit);
+            if (!is_array($followees)) {
+                $followees = [$followees];
+            }
             foreach ($followees as $followee) {
-                /** @todo if users > follows, this can cause an error */
+                // skip self-follow
                 if ($follower->getKey() == $followee->getKey()) {
-                    // skip self-follow
                     continue;
                 }
                 // use sync instead of attach to prevent dupes
@@ -153,8 +156,14 @@ class TestingSeeder extends Seeder {
                 $limit = $users->count();
             }
             $likers = $users->random($limit);
+            if (!is_array($likers)) {
+                $likers = [$likers];
+            }
             foreach ($likers as $liker) {
-                /** @todo prevent users from liking own photos*/
+                // skip self-like
+                if ($liker->getKey() == $photo->getuser->getKey()) {
+                    continue;
+                }
                 // use sync instead of attach to prevent dupes
                 $photo->getLikers()->sync([$liker->getKey()], false);
             }
