@@ -13,6 +13,7 @@ file, so make sure you've got `AllowOverrides`. Laravel, as usual, requires php-
 1. npm install
 1. bower install
 1. ./node_modules/grunt-cli/bin/grunt
+1. mkdir app/storage/uploads // should be writable
 
 ## To Do:
 * Likes & Follows
