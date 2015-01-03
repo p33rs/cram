@@ -11,6 +11,8 @@
 |
 */
 
+use cram\response\JsonResponse;
+
 ClassLoader::addDirectories(array(
 
 	app_path().'/commands',
@@ -49,6 +51,13 @@ Log::useFiles(storage_path().'/logs/laravel.log');
 App::error(function(Exception $exception, $code)
 {
 	Log::error($exception);
+    if (Request::ajax())
+    {
+        return JsonResponse::error(
+            $exception->getMessage()
+        );
+    }
+    return Redirect::guest('/');
 });
 
 /*
