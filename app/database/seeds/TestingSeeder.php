@@ -4,16 +4,16 @@ use Faker\Factory as Faker;
 
 class TestingSeeder extends Seeder {
 
-    const NUM_USERS = 10;
+    const NUM_USERS = 8;
     const PASSWORD = '12345678a';
 
     // per user
     const MIN_PHOTOS = 0;
-    const MAX_PHOTOS = 3;
+    const MAX_PHOTOS = 10;
 
     // per user; follows, not followers
     const MIN_FOLLOWS = 0;
-    const MAX_FOLLOWS = 8;
+    const MAX_FOLLOWS = 6;
 
     // per photo; random user, random text
     const MIN_COMMENTS = 0;
@@ -21,7 +21,7 @@ class TestingSeeder extends Seeder {
 
     // per photo; random user
     const MIN_LIKES = 0;
-    const MAX_LIKES = 20;
+    const MAX_LIKES = 8;
 
     // set bounds for X/Y dims of images
     const IMG_MIN = 200;
