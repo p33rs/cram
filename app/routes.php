@@ -10,8 +10,9 @@ Route::post('signup', ['uses' => 'UsersController@signup', 'as' => 'signup']);
 
 Route::group(['prefix' => 'user', 'before' => 'auth'], function() {
     Route::put('/', ['uses' => 'UsersController@update', 'as' => 'user/update']);
+    Route::get('/', ['uses' => 'UsersController@read', 'as' => 'user/list']);
     Route::group(['prefix' => '{username}'], function() {
-        Route::get('/', ['uses' => 'UsersController@read', 'as' => 'user/read']);
+        Route::get('/', ['uses' => 'UsersController@read', 'as' => 'user/view']);
         Route::post('/follow', ['uses' => 'UsersController@follow', 'as' => 'user/follow']);
         Route::post('/unfollow', ['uses' => 'UsersController@unfollow', 'as' => 'user/unfollow']);
     });

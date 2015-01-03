@@ -1,5 +1,6 @@
 <?php
 
+use cram\response\JsonResponse;
 class UsersController extends BaseController {
 
     public function login()
@@ -15,17 +16,13 @@ class UsersController extends BaseController {
         } elseif (!Auth::check() && !Auth::attempt(['username' => $username, 'password' => $password], $remember)) {
             $error = 'An invalid username or password was provided.';
         }
-        $result = [ 'success' => !$error, 'error' => $error ];
-        if (!$error) {
-            $result['redirect'] = URL::route('photos');
-        }
-        return Response::json($result);
+        return $error ? JsonResponse::error($error) : JsonResponse::success(Auth::user());
     }
 
     public function logout()
     {
         Auth::logout();
-        return Redirect::route('landing');
+        return JsonResponse::success();
     }
 
     public function signup()
@@ -35,24 +32,22 @@ class UsersController extends BaseController {
         $data = Input::all();
         /** @var cram\validators\SignupValidator $validator */
         $errors = $validators->get('Signup', $data)->errors();
-        $result = [ 'errors' => $errors ];
         if ($errors->count()) {
-            $result += ['success' => false];
-        } else {
-            unset($data['password2']);
-            $user = new User($data);
-            $user->password = Hash::make($data['password']);
-            $user->save();
-            Auth::login($user);
-            $result += [
-                'success' => true,
-                'redirect' => URL::route('photos')
-            ];
+            return JsonResponse::validation($errors);
         }
-        return Response::json($result);
+        unset($data['password2']);
+        $user = new User($data);
+        $user->password = Hash::make($data['password']);
+        $user->save();
+        Auth::login($user);
+        return JsonResponse::success(Auth::user());
     }
 
-    public function account()
+    public function read($username = null)
+    {
+    }
+
+    public function update()
     {
         $user = Auth::user();
         if (!Request::isMethod('post')) {
@@ -78,9 +73,14 @@ class UsersController extends BaseController {
             ->with('errors', $errors);
     }
 
-    public function follow()
+    public function follow($username)
     {
+        return JsonResponse::success();
+    }
 
+    public function unfollow($username)
+    {
+        return JsonResponse::success();
     }
 
 }
