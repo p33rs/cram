@@ -87,8 +87,7 @@ class TestingSeeder extends Seeder {
                     $x,
                     $y
                 ));
-                $filename = uniqid();
-                $user->getPhotos()->save(new Photo([
+                $user->photos()->save(new Photo([
                     'filename' => $filename,
                     'title' => $this->faker->sentence(mt_rand(1,5)),
                     'caption' => $this->faker->paragraph(mt_rand(0,6)),
@@ -107,9 +106,9 @@ class TestingSeeder extends Seeder {
             $limit = mt_rand(self::MIN_COMMENTS, self::MAX_COMMENTS);
             for ($i = 0; $i < $limit; $i++) {
                 $user = $users->random();
-                $photo->getComments()->save(new Comment([
+                $photo->comments()->save(new Comment([
                     'text' => $this->faker->paragraph(mt_rand(1,8)),
-                    'user' => $user->getKey()
+                    'user_id' => $user->getKey()
                 ]));
             }
         }
@@ -137,7 +136,7 @@ class TestingSeeder extends Seeder {
                     continue;
                 }
                 // use sync instead of attach to prevent dupes
-                $follower->getFollowing()->sync([$followee->getKey()], false);
+                $follower->following()->sync([$followee->getKey()], false);
             }
         }
         return $this;
@@ -161,11 +160,11 @@ class TestingSeeder extends Seeder {
             }
             foreach ($likers as $liker) {
                 // skip self-like
-                if ($liker->getKey() == $photo->getuser->getKey()) {
+                if ($liker->getKey() == $photo->user->getKey()) {
                     continue;
                 }
                 // use sync instead of attach to prevent dupes
-                $photo->getLikers()->sync([$liker->getKey()], false);
+                $photo->likers()->sync([$liker->getKey()], false);
             }
         }
         return $this;

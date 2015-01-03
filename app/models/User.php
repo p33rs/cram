@@ -17,24 +17,24 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         return $this->firstname . ' ' . $this->lastname;
     }
 
-    public function getPhotos()
+    public function photos()
     {
-        return $this->hasMany('Photo', 'user');
+        return $this->hasMany('Photo');
     }
 
-    public function getFollowers()
+    public function followers()
     {
         return $this->belongsToMany('User', 'follows', 'to', 'from')->withTimestamps();
     }
 
-    public function getFollowing()
+    public function following()
     {
         return $this->belongsToMany('User', 'follows', 'from', 'to')->withTimestamps();
     }
 
-    public function getLikes()
+    public function likes()
     {
-        return $this->belongsToMany('Photo', 'likes', 'user', 'photo');
+        return $this->belongsToMany('Photo', 'likes');
     }
 
 }

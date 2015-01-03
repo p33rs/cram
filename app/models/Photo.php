@@ -9,19 +9,19 @@ class Photo extends Eloquent {
 
     const UPLOADS_DIR = 'uploads';
 
-    public function getUser()
+    public function user()
     {
-        return $this->belongsTo('User', 'user');
+        return $this->belongsTo('User');
     }
 
-    public function getLikers()
+    public function likers()
     {
-        return $this->belongsToMany('User', 'likes', 'photo', 'user');
+        return $this->belongsToMany('User', 'likes');
     }
 
-    public function getComments()
+    public function comments()
     {
-        return $this->hasMany('Comment', 'photo');
+        return $this->hasMany('Comment');
     }
 
     public function getPath()

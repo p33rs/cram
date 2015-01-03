@@ -4,13 +4,13 @@ use Illuminate\Auth\UserTrait;
 use Illuminate\Auth\Reminders\RemindableTrait;
 
 class Comment extends Eloquent {
-    public function getUser()
+    public function user()
     {
-        return $this->belongsTo('User', 'user');
+        return $this->belongsTo('User');
     }
 
-    public function getPhoto()
+    public function photo()
     {
-        return $this->belongsTo('Photo', 'photo');
+        return $this->belongsTo('Photo');
     }
 }

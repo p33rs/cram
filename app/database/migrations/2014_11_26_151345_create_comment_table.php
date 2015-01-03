@@ -17,10 +17,10 @@ class CreateCommentTable extends Migration {
             $table->increments('id');
             $table->timestamps();
             $table->text('text');
-            $table->integer('photo')->unsigned();
-            $table->integer('user')->unsigned();
-            $table->foreign('photo')->references('id')->on('photos')->onDelete('cascade');
-            $table->foreign('user')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('photo_id')->unsigned();
+            $table->integer('user_id')->unsigned();
+            $table->foreign('photo_id')->references('id')->on('photos')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 		});
 	}
 
