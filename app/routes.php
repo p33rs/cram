@@ -3,26 +3,37 @@
 Route::pattern('id', '[0-9]+');
 
 Route::get('/', ['uses' => 'PagesController@landing', 'as' => 'landing']);
+
 Route::post('login', ['uses' => 'UsersController@login', 'as' => 'login']);
-Route::get('logout', ['uses' => 'UsersController@logout', 'as' => 'logout']);
+Route::post('logout', ['uses' => 'UsersController@logout', 'as' => 'logout']);
 Route::post('signup', ['uses' => 'UsersController@signup', 'as' => 'signup']);
-Route::match(['GET', 'POST'], 'account', ['uses' => 'UsersController@account', 'as' => 'account']);
-Route::get('photos', ['uses' => 'PhotosController@index', 'as' => 'photos']);
-Route::get('photos/new', ['uses' => 'PhotosController@new', 'as' => 'photos/new']);
 
 Route::group(['prefix' => 'user', 'before' => 'auth'], function() {
-    Route::get('{username}', ['uses' => 'PhotosController@index', 'as' => 'user/photos']);
-    Route::post('{username}/follow', ['uses' => 'UsersController@follow', 'as' => 'user/follow']);
-});
-
-Route::group(['prefix' => 'photo', 'before' => 'auth'], function() {
-    Route::match(['GET', 'POST'], 'upload', ['uses' => 'PhotosController@upload', 'as' => 'photo/upload']);
-    Route::group(['prefix' => '{id}'], function() {
-        Route::get('/', ['uses' => 'PhotosController@view', 'as' => 'photo']);
-        Route::get('raw', ['uses' => 'PhotosController@raw', 'as' => 'photo/raw']);
-        Route::post('comment', ['uses' => 'PhotosController@comment', 'as' => 'photo/comment']);
-        Route::match(['GET', 'POST'], 'delete', ['uses' => 'PhotosController@delete', 'as' => 'photo/delete']);
-        Route::post('like', ['uses' => 'PhotosController@like', 'as' => 'photo/like']);
+    Route::put('/', ['uses' => 'UsersController@update', 'as' => 'user/update']);
+    Route::group(['prefix' => '{username}'], function() {
+        Route::get('/', ['uses' => 'UsersController@read', 'as' => 'user/read']);
+        Route::post('/follow', ['uses' => 'UsersController@follow', 'as' => 'user/follow']);
+        Route::post('/unfollow', ['uses' => 'UsersController@unfollow', 'as' => 'user/unfollow']);
     });
 });
 
+Route::group(['prefix' => 'photo', 'before' => 'auth'], function() {
+    Route::post('/', ['uses' => 'PhotosController@create', 'as' => 'photo/create']);
+    Route::get('/', ['uses' => 'PhotosController@read', 'as' => 'photo/list']);
+    Route::group(['prefix' => '{id}'], function() {
+        Route::get('/', ['uses' => 'PhotosController@read', 'as' => 'photo/view']);
+        Route::get('.jpg', ['uses' => 'PhotosController@raw', 'as' => 'photo/raw']);
+        Route::put('/', ['uses' => 'PhotosController@update', 'as' => 'photo/update']);
+        Route::delete('/', ['uses' => 'PhotosController@delete', 'as' => 'photo/delete']);
+        Route::post('/like', ['uses' => 'PhotosController@like', 'as' => 'photo/like']);
+        Route::post('/unlike', ['uses' => 'PhotosController@unlike', 'as' => 'photo/unlike']);
+    });
+});
+
+Route::group(['prefix' => 'comment', 'before' => 'auth'], function() {
+    Route::post('/', ['uses' => 'CommentsController@create', 'as' => 'comment/create']);
+    Route::get('/', ['uses' => 'CommentsController@read', 'as' => 'comment/list']);
+    Route::group(['prefix' => '{id}'], function() {
+        Route::get('/', ['uses' => 'CommentsController@read', 'as' => 'comment/view']);
+    });
+});
