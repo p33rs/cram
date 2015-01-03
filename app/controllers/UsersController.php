@@ -75,6 +75,7 @@ class UsersController extends BaseController {
 
     public function follow($username)
     {
+        $follower = Auth::user();
         return JsonResponse::success();
     }
 
