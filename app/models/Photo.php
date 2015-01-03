@@ -44,7 +44,7 @@ class Photo extends Eloquent {
     {
         $filename = self::filename();
         $file->move(
-            self::upload_path(),
+            self::uploadPath(),
             $filename
         );
         return $filename;
@@ -53,12 +53,12 @@ class Photo extends Eloquent {
     private static function filename()
     {
         $filename = uniqid();
-        return file_exists(self::upload_path($filename))
+        return file_exists(self::uploadPath($filename))
             ? self::filename()
             : $filename;
     }
 
-    public static function upload_path($file = '')
+    public static function uploadPath($file = '')
     {
         return storage_path(self::UPLOADS_DIR) . ($file ? ( '/' . $file ) : '');
     }
